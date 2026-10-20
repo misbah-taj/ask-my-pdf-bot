@@ -124,8 +124,16 @@ def generate_answer(question, results):
         return "I couldn't find relevant information in your documents."
 
     load_dotenv()
-    api_key = os.getenv("GEMINI_API_KEY")
 
+api_key = os.getenv("GEMINI_API_KEY")
+
+if not api_key:
+    try:
+        import streamlit as st
+        api_key = st.secrets["GEMINI_API_KEY"]
+    except Exception:
+        api_key = None
+        
     if not api_key:
         return (
             "Gemini API key is missing. "
